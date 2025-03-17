@@ -1,0 +1,22 @@
+{
+  "name": "e3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "node",
+    "app",
+    "js"
+  ],
+  "license": "ISC",
+  "author": "NHS",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": ""
+}
