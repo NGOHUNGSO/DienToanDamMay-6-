@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD Food</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>CRUD Thức Ăn</h1>
+  <input type="text" id="name" placeholder="Tên món ăn">
+  <input type="number" id="calories" placeholder="Calo">
+  <button onclick="createFood()">➕ Thêm</button>
+  <button onclick="updateFood()">✏️ Sửa</button>
+  <button onclick="deleteFood()">❌ Xóa</button>
+  <br>
+  <input type="text" id="foodId" placeholder="Nhập ID để sửa/xoá">
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Calo</th>
+      </tr>
+    </thead>
+    <tbody id="foodList"></tbody>
+  </table>
+
+  <script>
+    const api = 'http://localhost:3000';
+
+    async function loadFoods() {
+      const res = await fetch(`${api}/foods`);
+      const foods = await res.json();
+      const tbody = document.getElementById("foodList");
+      tbody.innerHTML = '';
+      foods.forEach(f => {
+        const row = `<tr>
+          <td>${f._id}</td>
+          <td>${f.name}</td>
+          <td>${f.calories}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    async function createFood() {
+      const name = document.getElementById("name").value;
+      const calories = document.getElementById("calories").value;
+      await fetch(`${api}/food`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, calories })
+      });
+      loadFoods();
+    }
+
+    async function updateFood() {
+      const id = document.getElementById("foodId").value;
+      const name = document.getElementById("name").value;
+      const calories = document.getElementById("calories").value;
+      await fetch(`${api}/food/${id}`, {
+        method: "PATCH",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, calories })
+      });
+      loadFoods();
+    }
+
+    async function deleteFood() {
+      const id = document.getElementById("foodId").value;
+      await fetch(`${api}/food/${id}`, {
+        method: "DELETE"
+      });
+      loadFoods();
+    }
+
+    window.onload = loadFoods;
+  </script>
+</body>
+</html>
